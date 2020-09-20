@@ -1,5 +1,8 @@
 import "package:flutter/material.dart";
 
+// Widgets
+import 'package:flutter_complete_guide/question.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -12,18 +15,22 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Quiz extends StatelessWidget {
+class Quiz extends StatefulWidget {
+  @override
+  _QuizState createState() => _QuizState();
+}
+
+class _QuizState extends State<Quiz> {
   int _questionIndex = 0;
 
   List<String> _questions = [
     'What\'s your favorite color?',
     'What\'s your favorite animal?',
-    'What\'s your favorite instructor?'
+    'What\'s your favorite instructor?',
   ];
 
   void _answerQuestion() {
-    _questionIndex += 1;
-    print(_questionIndex);
+    setState(() => _questionIndex += 1);
   }
 
   @override
@@ -34,7 +41,7 @@ class Quiz extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Text(_questions[_questionIndex]),
+          Question(_questions[_questionIndex]),
           RaisedButton(
             child: Text('Answer 1'),
             onPressed: _answerQuestion,
