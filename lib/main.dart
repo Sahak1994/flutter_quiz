@@ -1,7 +1,8 @@
 import "package:flutter/material.dart";
 
 // Widgets
-import 'package:flutter_complete_guide/question.dart';
+import 'package:flutter_complete_guide/quiz.dart';
+import 'package:flutter_complete_guide/result.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,27 +11,40 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Quiz(),
+      home: Home(),
     );
   }
 }
 
-class Quiz extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  _QuizState createState() => _QuizState();
+  _HomeState createState() => _HomeState();
 }
 
-class _QuizState extends State<Quiz> {
+class _HomeState extends State<Home> {
   int _questionIndex = 0;
 
-  List<String> _questions = [
-    'What\'s your favorite color?',
-    'What\'s your favorite animal?',
-    'What\'s your favorite instructor?',
+  final List<Map<String, Object>> _questions = const [
+    {
+      'questionText': 'What\'s your favorite color?',
+      'answers': ['Black', 'Red', 'Green', 'White'],
+    },
+    {
+      'questionText': 'What\'s your favorite animal?',
+      'answers': ['Rabbit', 'Snack', 'Elephant', 'Lion'], 
+    },
+    {
+      'questionText': 'What\'s your favorite instructor?',
+      'answers': ['Juriy', 'Max', 'John', 'Pete'],
+    },
   ];
 
   void _answerQuestion() {
-    setState(() => _questionIndex += 1);
+     setState(() => _questionIndex += 1);
+  }
+
+  void _restartQuiz() {
+    setState(() => _questionIndex = 0);
   }
 
   @override
@@ -39,23 +53,13 @@ class _QuizState extends State<Quiz> {
       appBar: AppBar(
         title: Text('Flutter Quiz'),
       ),
-      body: Column(
-        children: <Widget>[
-          Question(_questions[_questionIndex]),
-          RaisedButton(
-            child: Text('Answer 1'),
-            onPressed: _answerQuestion,
-          ),
-          RaisedButton(
-            child: Text('Answer 2'),
-            onPressed: _answerQuestion,
-          ),
-          RaisedButton(
-            child: Text('Answer 3'),
-            onPressed: _answerQuestion,
-          ),
-        ],
-      ),
+      body: _questionIndex < _questions.length 
+        ? Quiz(
+          questions: _questions,
+          questionIndex: _questionIndex,
+          answerQuestion: _answerQuestion
+        )
+        : Result(_restartQuiz)
     );
   }
 }
