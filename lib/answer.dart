@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-enum A {
-  asd,
-}
-
 class Answer extends StatelessWidget {
   final String answerText;
   final Function answerQuestion;
